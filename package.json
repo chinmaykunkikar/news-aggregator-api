@@ -1,0 +1,19 @@
+{
+  "name": "news-aggregator-api",
+  "version": "0.0.0",
+  "description": "RESTful API that allows users to fetch news articles from multiple sources based on their preferences.",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chinmaykunkikar/news-aggregator-api.git"
+  },
+  "author": "Chinmay Kunkikar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chinmaykunkikar/news-aggregator-api/issues"
+  },
+  "homepage": "https://github.com/chinmaykunkikar/news-aggregator-api#readme"
+}
