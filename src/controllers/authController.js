@@ -1,4 +1,5 @@
 const Ajv = require("ajv");
+const bcrypt = require("bcrypt");
 const fs = require("fs");
 const path = require("path");
 
@@ -32,14 +33,15 @@ const register = (req, res) => {
   const { id, username, password } = req.body;
   if (validBody) {
     const users = readUsers();
+    const passHash = bcrypt.hashSync(password, 8);
     const existingUser = users.find((user) => user.username === username);
     if (existingUser) {
       res.status(400).json({ message: "User already exists" });
     } else {
-      const newUser = { id, username, password };
+      const newUser = { id, username, password: passHash };
       users.push(newUser);
       writeUsers(users);
-      return res.status(201).json({ message: "User registered successfully." });
+      return res.status(201).json({ message: "Registered successfully" });
     }
   } else {
     return res.status(400).json({ message: "Invalid user data" });
@@ -49,7 +51,16 @@ const register = (req, res) => {
 const login = (req, res) => {
   const { username, password } = req.body;
   const users = readUsers();
-  return res.status(200).json({ message: "boilerplate" });
+  const existingUser = users.find((user) => user.username === username);
+  if (!existingUser) {
+    return res.status(401).json({ message: "Username not found" });
+  } else {
+    const comparePass = bcrypt.compareSync(password, existingUser.password);
+    if (!comparePass) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+    return res.ststus(200).json({ message: "Login successful" });
+  }
 };
 
 module.exports = { login, register };
