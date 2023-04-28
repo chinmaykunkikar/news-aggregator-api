@@ -1,16 +1,15 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const routes = express.Router();
 
 const PORT = 3000;
 const app = express();
 
 app.use(routes);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-routes.use(bodyParser.json());
-routes.use(bodyParser.urlencoded({ extended: false }));
+routes.use(express.json());
+routes.use(express.urlencoded({ extended: false }));
 
 routes.get("/", (req, res) => {
   res.status(200).send("<h3>Welcome to the News Aggregator API</h3>");
