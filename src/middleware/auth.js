@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 const usersFile = path.join(__dirname, "..", "users.json");
 
@@ -16,7 +17,7 @@ module.exports = function verifyToken(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const users = readUsers();
-    req.user = users.find((user) => user.id === decoded.id);
+    req.user = users.find((user) => user.username === decoded.username);
     if (!req.user) {
       return res.status(401).json({ error: "Cannot verify your token" });
     }
