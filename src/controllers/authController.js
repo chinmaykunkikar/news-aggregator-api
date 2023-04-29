@@ -1,9 +1,12 @@
 const Ajv = require("ajv");
 const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
 const path = require("path");
 
 const ajv = new Ajv();
+dotenv.config();
 
 const usersFile = path.join(__dirname, "..", "users.json");
 
@@ -26,6 +29,10 @@ function readUsers() {
 function writeUsers(user) {
   const data = JSON.stringify(user);
   return fs.writeFileSync(usersFile, data);
+}
+
+function generateAccessToken(username) {
+  return jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: 86400 });
 }
 
 const register = (req, res) => {
@@ -59,7 +66,8 @@ const login = (req, res) => {
     if (!comparePass) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    return res.ststus(200).json({ message: "Login successful" });
+    const token = generateAccessToken(username);
+    return res.status(200).json({ message: "Login successful", token });
   }
 };
 
