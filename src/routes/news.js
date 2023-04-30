@@ -33,7 +33,6 @@ newsRoutes.put("/preferences", verifyToken, (req, res) => {
 
 newsRoutes.get("/", verifyToken, async (req, res) => {
   const { type } = req.query;
-  console.log(req.query);
   const { id, preferences } = req.user;
   let usersData = JSON.parse(JSON.stringify(readUsers()));
   const userIndex = usersData.findIndex((user) => user.id === id);
