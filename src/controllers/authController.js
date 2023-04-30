@@ -1,14 +1,12 @@
 const Ajv = require("ajv");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const path = require("path");
+
+const { readUsers, writeUsers } = require("../helpers/usersFileFns");
 
 const ajv = new Ajv();
 dotenv.config();
-
-const usersFile = path.join(__dirname, "..", "users.json");
 
 const userSchema = {
   type: "object",
@@ -25,16 +23,6 @@ const userSchema = {
   required: ["id", "username", "password"],
   additionalProperties: false,
 };
-
-function readUsers() {
-  const data = fs.readFileSync(usersFile);
-  return JSON.parse(data);
-}
-
-function writeUsers(user) {
-  const data = JSON.stringify(user);
-  return fs.writeFileSync(usersFile, data);
-}
 
 function generateAccessToken(username) {
   return jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: 86400 });

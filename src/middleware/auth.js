@@ -1,13 +1,6 @@
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
-const path = require("path");
 
-const usersFile = path.join(__dirname, "..", "users.json");
-
-function readUsers() {
-  const data = fs.readFileSync(usersFile);
-  return JSON.parse(data);
-}
+const { readUsers } = require("../helpers/usersFileFns");
 
 module.exports = function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
