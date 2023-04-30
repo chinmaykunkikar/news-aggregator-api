@@ -16,6 +16,11 @@ const userSchema = {
     id: { type: "string", minLength: 1 },
     username: { type: "string", minLength: 3 },
     password: { type: "string", minLength: 3 },
+    preferences: {
+      type: "object",
+      sources: { type: "array" },
+      categories: { type: "array" },
+    },
   },
   required: ["id", "username", "password"],
   additionalProperties: false,
@@ -37,7 +42,7 @@ function generateAccessToken(username) {
 
 const register = (req, res) => {
   const validBody = ajv.validate(userSchema, req.body);
-  const { id, username, password } = req.body;
+  const { id, username, password, preferences } = req.body;
   if (validBody) {
     const users = readUsers();
     const passHash = bcrypt.hashSync(password, 8);
@@ -45,7 +50,12 @@ const register = (req, res) => {
     if (existingUser) {
       res.status(400).json({ message: "User already exists" });
     } else {
-      const newUser = { id, username, password: passHash };
+      const newUser = {
+        id,
+        username,
+        password: passHash,
+        preferences: preferences || [],
+      };
       users.push(newUser);
       writeUsers(users);
       return res.status(201).json({ message: "Registered successfully" });
