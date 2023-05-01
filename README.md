@@ -24,14 +24,16 @@
 
 - [ ] Implement a **caching mechanism** to store news articles and reduce the number of calls to external news APIs. Use async/await and Promises to handle cache updates and retrievals.
 - [ ] Allow users to mark articles as "read" or "favorite". Implement endpoints to:
-      | Endpoint | Description |
-      | ------------------: | :------------------------------------------------------------- |
-      | `POST /news/:id/read` |Mark a news article as read. |
-      | `POST /news/:id/favorite` | Mark a news article as a favorite. |
-      | `GET /news/read` | Retrieve all read news articles. |
-      | `GET /news/favorites` | Retrieve all favorite news articles. |
-      | `GET /news/search/:keyword` | Search for news articles based on keywords. |
-- [x] Implement a mechanism to periodically update the cached news articles in the background, simulating a real-time news aggregator.
+
+|                    Endpoint | Description                                 |
+| --------------------------: | :------------------------------------------ |
+|       `POST /news/:id/read` | Mark a news article as read.                |
+|   `POST /news/:id/favorite` | Mark a news article as a favorite.          |
+|            `GET /news/read` | Retrieve all read news articles.            |
+|       `GET /news/favorites` | Retrieve all favorite news articles.        |
+| `GET /news/search/:keyword` | Search for news articles based on keywords. |
+
+- [ ] Implement a mechanism to periodically update the cached news articles in the background, simulating a real-time news aggregator.
 
 ### Schema
 
