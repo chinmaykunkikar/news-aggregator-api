@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
-const { readUsers, writeUsers } = require("../helpers/usersFileFns");
+const { readUsers, writeUsers } = require("../utils/usersFile.utils");
 
 const ajv = new Ajv();
 dotenv.config();

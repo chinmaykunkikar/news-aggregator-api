@@ -1,8 +1,8 @@
 const express = require("express");
 const routes = express.Router();
-const news = require("./routes/news");
+const news = require("./routes/news.routes");
 
-const { login, register } = require("./controllers/authController");
+const { login, register } = require("./controllers/auth.controller");
 
 const PORT = 3000;
 const app = express();

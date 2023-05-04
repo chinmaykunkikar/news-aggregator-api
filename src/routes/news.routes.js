@@ -3,8 +3,8 @@ const dotenv = require("dotenv");
 const express = require("express");
 const newsRoutes = express.Router();
 
-const verifyToken = require("../middleware/auth");
-const { readUsers, writeUsers } = require("../helpers/usersFileFns");
+const verifyToken = require("../middleware/auth.middleware");
+const { readUsers, writeUsers } = require("../utils/usersFile.utils");
 
 newsRoutes.use(express.urlencoded({ extended: false }));
 newsRoutes.use(express.json());
