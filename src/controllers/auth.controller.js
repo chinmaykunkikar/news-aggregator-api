@@ -1,35 +1,25 @@
 const Ajv = require("ajv");
+const betterAjvErrors = require("better-ajv-errors").default;
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
 const { readUsers, writeUsers } = require("../utils/usersFile.utils");
+const usersSchema = require("../schemas/users.schema");
+const preferencesSchema = require("../schemas/preferences.schema");
 
-const ajv = new Ajv();
+const ajv = new Ajv({ useDefaults: true });
 dotenv.config();
 
-const userSchema = {
-  type: "object",
-  properties: {
-    id: { type: "string", minLength: 1 },
-    username: { type: "string", minLength: 3 },
-    password: { type: "string", minLength: 3 },
-    preferences: {
-      type: "object",
-      sources: { type: "array" },
-      categories: { type: "array" },
-    },
-  },
-  required: ["id", "username", "password"],
-  additionalProperties: false,
-};
+const validatePreferences = ajv.compile(preferencesSchema);
+const validateUsers = ajv.compile(usersSchema);
 
 function generateAccessToken(username) {
   return jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: 86400 });
 }
 
 const register = (req, res) => {
-  const validBody = ajv.validate(userSchema, req.body);
+  const validBody = validateUsers(req.body);
   const { id, username, password, preferences } = req.body;
   if (validBody) {
     const users = readUsers();
@@ -42,14 +32,15 @@ const register = (req, res) => {
         id,
         username,
         password: passHash,
-        preferences: preferences || [],
+        preferences,
       };
       users.push(newUser);
       writeUsers(users);
       return res.status(201).json({ message: "Registered successfully" });
     }
   } else {
-    return res.status(400).json({ message: "Invalid user data" });
+    // console.log(betterAjvErrors(usersSchema, req.body, validateUsers.errors));
+    return res.status(400).json({ message: "Invalid data" });
   }
 };
 
