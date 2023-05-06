@@ -1,3 +1,4 @@
+const Ajv = require("ajv");
 const axios = require("axios");
 const dotenv = require("dotenv");
 const express = require("express");
@@ -5,10 +6,14 @@ const newsRoutes = express.Router();
 
 const verifyToken = require("../middleware/auth.middleware");
 const { readUsers, writeUsers } = require("../utils/usersFile.utils");
+const preferencesSchema = require("../schemas/preferences.schema");
 
 newsRoutes.use(express.urlencoded({ extended: false }));
 newsRoutes.use(express.json());
+const ajv = new Ajv();
 dotenv.config();
+
+const validatePreferences = ajv.compile(preferencesSchema);
 
 newsRoutes.get("/preferences", verifyToken, (req, res) => {
   res.json(req.user.preferences);
@@ -16,16 +21,21 @@ newsRoutes.get("/preferences", verifyToken, (req, res) => {
 
 newsRoutes.put("/preferences", verifyToken, (req, res) => {
   try {
-    const { preferences } = req.body;
-    const { id } = req.user;
-    let usersData = JSON.parse(JSON.stringify(readUsers()));
-    const userIndex = usersData.findIndex((user) => user.id === id);
-    if (userIndex === -1) {
-      return res.status(404).json({ message: "User not found" });
+    const preferences = req.body;
+    const validBody = validatePreferences(preferences);
+    if (validBody) {
+      const { id } = req.user;
+      let usersData = JSON.parse(JSON.stringify(readUsers()));
+      const userIndex = usersData.findIndex((user) => user.id === id);
+      if (userIndex === -1) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      usersData[userIndex].preferences = preferences;
+      writeUsers(usersData);
+      res.status(200).json({ message: "News preferences updated" });
+    } else {
+      return res.status(400).json({ message: "Invalid data" });
     }
-    usersData[userIndex].preferences = preferences;
-    writeUsers(usersData);
-    res.status(200).json({ message: "News preferences updated" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
