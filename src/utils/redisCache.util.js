@@ -1,7 +1,12 @@
+const dotenv = require("dotenv");
 const redis = require("redis");
 const client = redis.createClient();
-client.on("error", (err) => console.log("Redis Server Error", err));
-client.connect();
+(async () => {
+  client.on("error", (err) => console.log("Redis Server Error", err));
+  await client.connect();
+})();
+
+dotenv.config();
 
 const ttl = process.env.REDIS_TTL || 3600;
 
@@ -12,6 +17,6 @@ module.exports = async function getOrSetCache(key, callback, ...callbackArgs) {
     return JSON.parse(data);
   }
   const dataToCache = await callback(...callbackArgs);
-  await client.set(key, JSON.stringify(dataToCache), "EX", ttl);
+  await client.setEx(key, ttl, JSON.stringify(dataToCache));
   return dataToCache;
 };
