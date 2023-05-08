@@ -1,12 +1,14 @@
 const express = require("express");
+const helmet = require("helmet");
 const routes = express.Router();
-const news = require("./routes/news.route");
 
+const news = require("./routes/news.route");
 const { login, register } = require("./controllers/auth.controller");
 
 const PORT = 3000;
 const app = express();
 
+app.use(helmet());
 app.use(routes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
