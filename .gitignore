@@ -22,3 +22,6 @@ lerna-debug.log*
 
 # Optional npm cache directory
 .npm
+
+# Snyk
+.dccache
