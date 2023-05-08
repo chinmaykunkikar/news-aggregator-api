@@ -42,7 +42,6 @@ newsRoutes.put("/preferences", verifyToken, (req, res) => {
 });
 
 newsRoutes.get("/", verifyToken, async (req, res) => {
-  const { type } = req.query;
   const { id, preferences } = req.user;
   let usersData = JSON.parse(JSON.stringify(readUsers()));
   const userIndex = usersData.findIndex((user) => user.id === id);
@@ -51,17 +50,37 @@ newsRoutes.get("/", verifyToken, async (req, res) => {
   }
   try {
     const sources = preferences.sources.join(",");
+    let newsResponse;
+    newsResponse = await axios.get("https://newsapi.org/v2/everything", {
+      params: {
+        sources,
+        apiKey: process.env.NEWSAPI_KEY,
+      },
+    });
+    const articles = newsResponse.data.articles;
+    res.status(200).json(articles);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+newsRoutes.get("/top", verifyToken, async (req, res) => {
+  const { id, preferences } = req.user;
+  let usersData = JSON.parse(JSON.stringify(readUsers()));
+  const userIndex = usersData.findIndex((user) => user.id === id);
+  if (userIndex === -1) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  try {
     const categories = preferences.categories.join(",");
     let newsResponse;
-    if (type.toLowerCase() === "top") {
-      newsResponse = await axios.get(
-        `https://newsapi.org/v2/top-headlines?category=${categories}&apiKey=${process.env.NEWSAPI_KEY}`
-      );
-    } else {
-      newsResponse = await axios.get(
-        `https://newsapi.org/v2/everything?sources=${sources}&apiKey=${process.env.NEWSAPI_KEY}`
-      );
-    }
+    newsResponse = await axios.get("https://newsapi.org/v2/top-headlines", {
+      params: {
+        category: categories,
+        apiKey: process.env.NEWSAPI_KEY,
+      },
+    });
     const articles = newsResponse.data.articles;
     res.status(200).json(articles);
   } catch (error) {
