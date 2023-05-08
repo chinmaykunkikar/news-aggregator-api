@@ -9,7 +9,6 @@ const PORT = 3000;
 const app = express();
 
 app.use(helmet());
-app.use(express.csrf());
 app.use(routes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
