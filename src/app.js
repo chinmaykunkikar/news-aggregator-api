@@ -1,6 +1,6 @@
 const express = require("express");
 const routes = express.Router();
-const news = require("./routes/news.routes");
+const news = require("./routes/news.route");
 
 const { login, register } = require("./controllers/auth.controller");
 

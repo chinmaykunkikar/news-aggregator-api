@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const { readUsers } = require("../utils/usersFile.utils");
+const { readUsers } = require("../utils/usersFile.util");
 
 module.exports = function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
-const { readUsers, writeUsers } = require("../utils/usersFile.utils");
+const { readUsers, writeUsers } = require("../utils/usersFile.util");
 const usersSchema = require("../schemas/users.schema");
 const preferencesSchema = require("../schemas/preferences.schema");
 
