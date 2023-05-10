@@ -23,7 +23,7 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .get("/preferences")
-      .set("Authorization", `Bearer ${token}`)
+      .set("Authorization", `JWT ${token}`)
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
