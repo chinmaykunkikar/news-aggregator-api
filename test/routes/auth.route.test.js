@@ -6,12 +6,15 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-describe("User auth", () => {
+describe("Auth routes", () => {
   const testUser = {
     id: "666",
     username: "foo",
     password: "bar",
-    preferences: { sources: [], categories: [] },
+    preferences: {
+      sources: ["bbc-news"],
+      categories: ["technology", "science"],
+    },
   };
 
   it("should register a new user", (done) => {
