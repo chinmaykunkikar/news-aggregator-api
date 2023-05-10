@@ -2,9 +2,9 @@ const express = require("express");
 const helmet = require("helmet");
 const routes = express.Router();
 
+const auth = require("./routes/auth.route");
 const news = require("./routes/news.route");
 const preferences = require("./routes/preferences.route");
-const root = require("./routes/root.route");
 
 let PORT;
 const app = express();
@@ -14,7 +14,7 @@ app.use(routes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-routes.use("/", root);
+routes.use("/", auth);
 routes.use("/news", news);
 routes.use("/preferences", preferences);
 
