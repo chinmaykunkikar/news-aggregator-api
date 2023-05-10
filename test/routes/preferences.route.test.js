@@ -59,7 +59,7 @@ describe("Preferences APIs", () => {
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(400);
-        expect(res.body).to.have.property("message").eql("Invalid data");
+        expect(res.body).to.have.property("error").eql("Invalid data");
         done();
       });
   });
@@ -73,7 +73,7 @@ describe("Preferences APIs", () => {
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(400);
-        expect(res.body).to.have.property("message").eql("Invalid data");
+        expect(res.body).to.have.property("error").eql("Invalid data");
         done();
       });
   });

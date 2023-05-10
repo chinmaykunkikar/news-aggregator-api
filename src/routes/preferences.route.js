@@ -27,13 +27,13 @@ prefRoutes.put("/", verifyToken, (req, res) => {
       let usersData = JSON.parse(JSON.stringify(readUsers()));
       const userIndex = usersData.findIndex((user) => user.id === id);
       if (userIndex === -1) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ error: "User not found" });
       }
       usersData[userIndex].preferences = preferences;
       writeUsers(usersData);
       res.status(200).json({ message: "News preferences updated" });
     } else {
-      return res.status(400).json({ message: "Invalid data" });
+      return res.status(400).json({ error: "Invalid data" });
     }
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
