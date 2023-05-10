@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "nodemon src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive 'test/**/*.js' --timeout 10000 --exit"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,9 @@
     "redis": "^4.6.6"
   },
   "devDependencies": {
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.22"
   }
 }

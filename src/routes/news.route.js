@@ -17,7 +17,7 @@ newsRoutes.get("/", verifyToken, async (req, res) => {
   let usersData = JSON.parse(JSON.stringify(readUsers()));
   const userIndex = usersData.findIndex((user) => user.id === id);
   if (userIndex === -1) {
-    return res.status(404).json({ message: "User not found" });
+    return res.status(404).json({ error: "User not found" });
   }
   try {
     const sources = preferences.sources.join(",");
@@ -46,7 +46,7 @@ newsRoutes.get("/top", verifyToken, async (req, res) => {
   let usersData = JSON.parse(JSON.stringify(readUsers()));
   const userIndex = usersData.findIndex((user) => user.id === id);
   if (userIndex === -1) {
-    return res.status(404).json({ message: "User not found" });
+    return res.status(404).json({ error: "User not found" });
   }
   try {
     const category = preferences.categories.join(",");

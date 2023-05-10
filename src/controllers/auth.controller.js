@@ -26,7 +26,7 @@ const register = (req, res) => {
     const passHash = bcrypt.hashSync(password, 8);
     const existingUser = users.find((user) => user.username === username);
     if (existingUser) {
-      res.status(400).json({ message: "User already exists" });
+      res.status(400).json({ error: "User already exists" });
     } else {
       const newUser = {
         id,
@@ -40,7 +40,7 @@ const register = (req, res) => {
     }
   } else {
     // console.log(betterAjvErrors(usersSchema, req.body, validateUsers.errors));
-    return res.status(400).json({ message: "Invalid data" });
+    return res.status(400).json({ error: "Invalid data" });
   }
 };
 
@@ -49,11 +49,11 @@ const login = (req, res) => {
   const users = readUsers();
   const existingUser = users.find((user) => user.username === username);
   if (!existingUser) {
-    return res.status(401).json({ message: "Username not found" });
+    return res.status(404).json({ error: "Username not found" });
   } else {
     const comparePass = bcrypt.compareSync(password, existingUser.password);
     if (!comparePass) {
-      return res.status(401).json({ message: "Invalid password" });
+      return res.status(401).json({ error: "Invalid password" });
     }
     const token = generateAccessToken(username);
     return res.status(200).json({ message: "Login successful", token });
