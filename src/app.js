@@ -29,3 +29,5 @@ app
     if (!error) console.log("Server is running on port " + PORT);
   })
   .on("error", (error) => console.error("Cannot start the server.\n", error));
+
+module.exports = app;
