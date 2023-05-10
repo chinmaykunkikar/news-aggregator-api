@@ -6,7 +6,7 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-describe("News routes", () => {
+describe("News APIs", () => {
   before((done) => {
     chai
       .request(app)
@@ -45,10 +45,21 @@ describe("News routes", () => {
       });
   });
 
-  it("should not return articles without auth", (done) => {
+  it("should not return /news without auth", (done) => {
     chai
       .request(app)
       .get("/news")
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res).to.have.status(401);
+        done();
+      });
+  });
+
+  it("should not return /news/top without auth", (done) => {
+    chai
+      .request(app)
+      .get("/news/top")
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(401);

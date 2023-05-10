@@ -6,7 +6,7 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-describe("Auth routes", () => {
+describe("Auth APIs", () => {
   const testUser = {
     id: "666",
     username: "foo",
