@@ -49,7 +49,7 @@ const login = (req, res) => {
   const users = readUsers();
   const existingUser = users.find((user) => user.username === username);
   if (!existingUser) {
-    return res.status(401).json({ message: "Username not found" });
+    return res.status(404).json({ message: "Username not found" });
   } else {
     const comparePass = bcrypt.compareSync(password, existingUser.password);
     if (!comparePass) {
