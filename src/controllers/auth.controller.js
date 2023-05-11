@@ -2,6 +2,7 @@ const Ajv = require("ajv").default;
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
+const { nanoid } = require("nanoid");
 
 const { readUsers, writeUsers } = require("../utils/usersFile.util");
 const usersSchema = require("../schemas/users.schema");
@@ -20,7 +21,8 @@ function generateAccessToken(username) {
 
 const register = (req, res) => {
   const validBody = validateUsers(req.body);
-  const { id, username, password, preferences } = req.body;
+  const { username, password, preferences } = req.body;
+  const id = nanoid(5);
   if (validBody) {
     const users = readUsers();
     const passHash = bcrypt.hashSync(password, 8);

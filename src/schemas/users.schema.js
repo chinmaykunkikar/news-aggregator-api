@@ -2,11 +2,6 @@ const usersSchema = {
   $id: "/schema/users",
   type: "object",
   properties: {
-    id: {
-      type: "string",
-      minLength: 1,
-      errorMessage: "id: field must be a non-empty string.",
-    },
     username: {
       type: "string",
       minLength: 3,
@@ -24,11 +19,10 @@ const usersSchema = {
         "The 'preferences' field must be according to the preferences schema.",
     },
   },
-  required: ["id", "username", "password"],
+  required: ["username", "password"],
   additionalProperties: false,
   errorMessage: {
     required: {
-      id: "The 'id' field is required.",
       username: "The 'username' field is required.",
       password: "The 'password' field is required.",
     },

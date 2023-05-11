@@ -26,6 +26,7 @@
     "express": "^4.18.2",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.0",
+    "nanoid": "^3.3.6",
     "redis": "^4.6.6"
   },
   "devDependencies": {
