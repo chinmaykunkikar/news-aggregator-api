@@ -14,6 +14,10 @@ app.use(routes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.get("/", (_, res) => {
+  res.status(200).send("<h2>Welcome to the News Aggregator API</h2>");
+});
+
 routes.use("/", auth);
 routes.use("/news", news);
 routes.use("/preferences", preferences);
