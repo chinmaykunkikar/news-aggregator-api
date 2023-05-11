@@ -41,7 +41,13 @@ const register = (req, res) => {
       return res.status(201).json({ message: "Registered successfully" });
     }
   } else {
-    return res.status(400).json({ error: "Invalid data" });
+    const errors = validateUsers.errors.map((error) => {
+      const { message } = error;
+      return { message };
+    });
+    return res
+      .status(400)
+      .json({ status: "error", message: "Validation error", errors });
   }
 };
 
