@@ -1,16 +1,12 @@
 const express = require("express");
-const rootRoutes = express.Router();
+const authRoutes = express.Router();
 
 const { login, register } = require("../controllers/auth.controller");
 
-rootRoutes.use(express.json());
-rootRoutes.use(express.urlencoded({ extended: false }));
+authRoutes.use(express.json());
+authRoutes.use(express.urlencoded({ extended: false }));
 
-rootRoutes.get("/", (_, res) => {
-  res.status(200).send("<h3>Welcome to the News Aggregator API</h3>");
-});
+authRoutes.post("/register", register);
+authRoutes.post("/login", login);
 
-rootRoutes.post("/register", register);
-rootRoutes.post("/login", login);
-
-module.exports = rootRoutes;
+module.exports = authRoutes;
