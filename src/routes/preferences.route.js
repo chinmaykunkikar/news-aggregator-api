@@ -1,4 +1,4 @@
-const Ajv = require("ajv");
+const Ajv = require("ajv").default;
 const express = require("express");
 const prefRoutes = express.Router();
 
@@ -8,7 +8,9 @@ const preferencesSchema = require("../schemas/preferences.schema");
 
 prefRoutes.use(express.urlencoded({ extended: false }));
 prefRoutes.use(express.json());
-const ajv = new Ajv();
+
+const ajv = new Ajv({ useDefaults: true, allErrors: true });
+require("ajv-errors")(ajv);
 
 const validatePreferences = ajv.compile(preferencesSchema);
 

@@ -1,5 +1,4 @@
-const Ajv = require("ajv");
-const betterAjvErrors = require("better-ajv-errors").default;
+const Ajv = require("ajv").default;
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
@@ -8,10 +7,11 @@ const { readUsers, writeUsers } = require("../utils/usersFile.util");
 const usersSchema = require("../schemas/users.schema");
 const preferencesSchema = require("../schemas/preferences.schema");
 
-const ajv = new Ajv({ useDefaults: true });
+const ajv = new Ajv({ useDefaults: true, allErrors: true });
+require("ajv-errors")(ajv);
 dotenv.config();
 
-const validatePreferences = ajv.compile(preferencesSchema);
+ajv.compile(preferencesSchema);
 const validateUsers = ajv.compile(usersSchema);
 
 function generateAccessToken(username) {
@@ -39,7 +39,6 @@ const register = (req, res) => {
       return res.status(201).json({ message: "Registered successfully" });
     }
   } else {
-    // console.log(betterAjvErrors(usersSchema, req.body, validateUsers.errors));
     return res.status(400).json({ error: "Invalid data" });
   }
 };
