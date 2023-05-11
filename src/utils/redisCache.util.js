@@ -2,8 +2,12 @@ const dotenv = require("dotenv");
 const redis = require("redis");
 const client = redis.createClient();
 (async () => {
-  client.on("error", (err) => console.log("Redis Server Error", err));
-  await client.connect();
+  client.connect();
+  client.on("error", (err) => {
+    console.error("Failed to connect to Redis:", err);
+    console.error("Please make sure Redis is running and try again.");
+    process.exit(1);
+  });
 })();
 
 dotenv.config();

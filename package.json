@@ -19,13 +19,14 @@
   "homepage": "https://github.com/chinmaykunkikar/news-aggregator-api#readme",
   "dependencies": {
     "ajv": "^8.12.0",
+    "ajv-errors": "^3.0.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
-    "better-ajv-errors": "^1.2.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.0",
+    "nanoid": "^3.3.6",
     "redis": "^4.6.6"
   },
   "devDependencies": {
