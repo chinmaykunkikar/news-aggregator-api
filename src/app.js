@@ -5,6 +5,7 @@ const routes = express.Router();
 const auth = require("./routes/auth.route");
 const news = require("./routes/news.route");
 const preferences = require("./routes/preferences.route");
+const { PORT: ENV_PORT } = require("./config");
 
 let PORT;
 const app = express();
@@ -22,11 +23,7 @@ routes.use("/", auth);
 routes.use("/news", news);
 routes.use("/preferences", preferences);
 
-if (process.env.PORT !== "") {
-  PORT = process.env.PORT;
-} else {
-  PORT = 3000;
-}
+ENV_PORT !== "" ? (PORT = ENV_PORT) : (PORT = 3000);
 
 app
   .listen(PORT, (error) => {

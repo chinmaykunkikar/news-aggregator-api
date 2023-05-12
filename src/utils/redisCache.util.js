@@ -1,5 +1,5 @@
-const dotenv = require("dotenv");
 const redis = require("redis");
+const { REDIS_TTL } = require("../config");
 const client = redis.createClient();
 (async () => {
   client.connect();
@@ -10,9 +10,7 @@ const client = redis.createClient();
   });
 })();
 
-dotenv.config();
-
-const ttl = process.env.REDIS_TTL || 3600;
+const ttl = REDIS_TTL || 3600;
 
 module.exports = async function getOrSetCache(key, callback, ...callbackArgs) {
   const data = await client.get(key);

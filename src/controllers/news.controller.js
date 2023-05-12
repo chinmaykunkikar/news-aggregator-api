@@ -1,10 +1,8 @@
 const axios = require("axios");
-const dotenv = require("dotenv");
 
 const { readUsers } = require("../utils/usersFile.util");
 const getOrSetCache = require("../utils/redisCache.util");
-
-dotenv.config();
+const { NEWSAPI_KEY } = require("../config");
 
 async function getNews(req, res) {
   const { id, preferences } = req.user;
@@ -21,7 +19,7 @@ async function getNews(req, res) {
         {
           params: {
             sources,
-            apiKey: process.env.NEWSAPI_KEY,
+            apiKey: NEWSAPI_KEY,
           },
         }
       );
@@ -49,7 +47,7 @@ async function getTopNews(req, res) {
         {
           params: {
             category,
-            apiKey: process.env.NEWSAPI_KEY,
+            apiKey: NEWSAPI_KEY,
           },
         }
       );

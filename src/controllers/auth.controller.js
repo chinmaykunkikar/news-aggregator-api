@@ -1,22 +1,21 @@
 const Ajv = require("ajv").default;
 const bcrypt = require("bcrypt");
-const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const { nanoid } = require("nanoid");
 
 const { readUsers, writeUsers } = require("../utils/usersFile.util");
 const usersSchema = require("../schemas/users.schema");
 const preferencesSchema = require("../schemas/preferences.schema");
+const { JWT_SECRET } = require("../config");
 
 const ajv = new Ajv({ useDefaults: true, allErrors: true });
 require("ajv-errors")(ajv);
-dotenv.config();
 
 ajv.compile(preferencesSchema);
 const validateUsers = ajv.compile(usersSchema);
 
 function generateAccessToken(username) {
-  return jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: 86400 });
+  return jwt.sign({ username }, JWT_SECRET, { expiresIn: 86400 });
 }
 
 const register = (req, res) => {

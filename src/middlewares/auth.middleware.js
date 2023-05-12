@@ -1,9 +1,7 @@
-const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
 const { readUsers } = require("../utils/usersFile.util");
-
-dotenv.config();
+const { JWT_SECRET } = require("../config");
 
 module.exports = function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -12,7 +10,7 @@ module.exports = function verifyToken(req, res, next) {
   }
   const accessToken = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+    const decoded = jwt.verify(accessToken, JWT_SECRET);
     const users = readUsers();
     req.user = users.find((user) => user.username === decoded.username);
     if (!req.user) {
