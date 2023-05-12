@@ -62,8 +62,8 @@ const login = (req, res) => {
     if (!comparePass) {
       return res.status(401).json({ error: "Invalid password" });
     }
-    const token = generateAccessToken(username);
-    return res.status(200).json({ message: "Login successful", token });
+    const accessToken = generateAccessToken(username);
+    return res.status(200).json({ message: "Login successful", accessToken });
   }
 };
 

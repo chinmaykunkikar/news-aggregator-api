@@ -10,9 +10,9 @@ module.exports = function verifyToken(req, res, next) {
   if (!authHeader) {
     return res.status(401).json({ error: "Auth header not found" });
   }
-  const token = authHeader.split(" ")[1];
+  const accessToken = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
     const users = readUsers();
     req.user = users.find((user) => user.username === decoded.username);
     if (!req.user) {
