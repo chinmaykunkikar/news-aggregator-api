@@ -15,7 +15,7 @@ describe("News APIs", () => {
         .send({ username: "foo", password: "bar" })
         .end((err, res) => {
           expect(err).to.be.null;
-          token = res.body.token;
+          accessToken = res.body.accessToken;
           done();
         });
     });
@@ -24,7 +24,7 @@ describe("News APIs", () => {
       chai
         .request(app)
         .get("/news")
-        .set("Authorization", `JWT ${token}`)
+        .set("Authorization", `JWT ${accessToken}`)
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(200);
@@ -53,7 +53,7 @@ describe("News APIs", () => {
         .send({ username: "foo", password: "bar" })
         .end((err, res) => {
           expect(err).to.be.null;
-          token = res.body.token;
+          accessToken = res.body.accessToken;
           done();
         });
     });
@@ -62,7 +62,7 @@ describe("News APIs", () => {
       chai
         .request(app)
         .get("/news/top")
-        .set("Authorization", `JWT ${token}`)
+        .set("Authorization", `JWT ${accessToken}`)
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(200);

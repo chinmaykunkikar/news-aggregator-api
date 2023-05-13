@@ -19,7 +19,7 @@ describe("Preferences APIs", () => {
       .send({ username: "foo", password: "bar" })
       .end((err, res) => {
         expect(err).to.be.null;
-        token = res.body.token;
+        accessToken = res.body.accessToken;
         done();
       });
   });
@@ -28,7 +28,7 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .get("/preferences")
-      .set("Authorization", `JWT ${token}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
@@ -43,7 +43,7 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .put("/preferences")
-      .set("Authorization", `JWT ${token}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .send({ categories: ["business"], sources: ["business-insider"] })
       .end((err, res) => {
         expect(err).to.be.null;
@@ -59,12 +59,12 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .put("/preferences")
-      .set("Authorization", `JWT ${token}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .send({ categories: ["music"], sources: ["bbc-news"] })
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(400);
-        expect(res.body).to.have.property("error").eql(ERR_VALIDATION);
+        expect(res.body).to.have.property("message").eql(ERR_VALIDATION);
         done();
       });
   });
@@ -73,12 +73,12 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .put("/preferences")
-      .set("Authorization", `JWT ${token}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .send({ categories: ["technology"] })
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(400);
-        expect(res.body).to.have.property("error").eql(ERR_VALIDATION);
+        expect(res.body).to.have.property("message").eql(ERR_VALIDATION);
         done();
       });
   });
