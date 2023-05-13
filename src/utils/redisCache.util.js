@@ -1,4 +1,4 @@
-const redisClient = require("../client/redis.client");
+const redisClient = require("../clients/redis.client");
 const { REDIS_TTL } = require("../configs/env.config");
 
 const ttl = REDIS_TTL || 3600;
