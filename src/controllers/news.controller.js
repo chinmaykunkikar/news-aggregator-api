@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const { readUsers } = require("../utils/usersFile.util");
 const getOrSetCache = require("../utils/redisCache.util");
-const { NEWSAPI_KEY } = require("../config");
+const { NEWSAPI_KEY } = require("../configs/env.config");
 
 async function getNews(req, res) {
   const { id, preferences } = req.user;

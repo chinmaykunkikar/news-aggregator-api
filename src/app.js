@@ -5,7 +5,7 @@ const routes = express.Router();
 const auth = require("./routes/auth.route");
 const news = require("./routes/news.route");
 const preferences = require("./routes/preferences.route");
-const { PORT: ENV_PORT } = require("./config");
+const { PORT: ENV_PORT } = require("./configs/env.config");
 
 let PORT;
 const app = express();

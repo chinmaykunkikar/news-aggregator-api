@@ -6,7 +6,7 @@ const { nanoid } = require("nanoid");
 const { readUsers, writeUsers } = require("../utils/usersFile.util");
 const usersSchema = require("../schemas/users.schema");
 const preferencesSchema = require("../schemas/preferences.schema");
-const { JWT_SECRET } = require("../config");
+const { JWT_SECRET } = require("../configs/env.config");
 
 const ajv = new Ajv({ useDefaults: true, allErrors: true });
 require("ajv-errors")(ajv);
