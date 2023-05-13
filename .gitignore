@@ -25,3 +25,6 @@ lerna-debug.log*
 
 # Snyk
 .dccache
+
+# Redis binary dump (dump.rdb) files
+*.rdb
