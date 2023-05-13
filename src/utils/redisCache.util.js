@@ -14,7 +14,6 @@ module.exports = async function getOrSetCache(key, callback, ...callbackArgs) {
     await redisClient.setEx(key, ttl, JSON.stringify(dataToCache));
     return dataToCache;
   } catch (error) {
-    console.error("Error accessing Redis:", error);
     throw error;
   }
 };

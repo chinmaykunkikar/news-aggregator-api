@@ -7,6 +7,15 @@ const { readUsers, writeUsers } = require("../utils/usersFile.util");
 const usersSchema = require("../schemas/users.schema");
 const preferencesSchema = require("../schemas/preferences.schema");
 const { JWT_SECRET } = require("../configs/env.config");
+const {
+  ERR_USER_EXISTS,
+  ERR_VALIDATION,
+  ERR_USER_NOT_FOUND,
+  ERR_INVALID_PASSWORD,
+  STATUS_ERROR,
+  MSG_SUCCESSFUL_REGISTRATION,
+  MSG_SUCCESSFUL_LOGIN,
+} = require("../constants/app.constants");
 
 const ajv = new Ajv({ useDefaults: true, allErrors: true });
 require("ajv-errors")(ajv);
@@ -27,7 +36,7 @@ const register = (req, res) => {
     const passHash = bcrypt.hashSync(password, 8);
     const existingUser = users.find((user) => user.username === username);
     if (existingUser) {
-      res.status(400).json({ error: "User already exists" });
+      res.status(400).json({ error: ERR_USER_EXISTS });
     } else {
       const newUser = {
         id,
@@ -37,7 +46,7 @@ const register = (req, res) => {
       };
       users.push(newUser);
       writeUsers(users);
-      return res.status(201).json({ message: "Registered successfully" });
+      return res.status(201).json({ message: MSG_SUCCESSFUL_REGISTRATION });
     }
   } else {
     const errors = validateUsers.errors.map((error) => {
@@ -46,7 +55,7 @@ const register = (req, res) => {
     });
     return res
       .status(400)
-      .json({ status: "error", message: "Validation error", errors });
+      .json({ status: STATUS_ERROR, message: ERR_VALIDATION, errors });
   }
 };
 
@@ -55,14 +64,14 @@ const login = (req, res) => {
   const users = readUsers();
   const existingUser = users.find((user) => user.username === username);
   if (!existingUser) {
-    return res.status(404).json({ error: "Username not found" });
+    return res.status(404).json({ error: ERR_USER_NOT_FOUND });
   } else {
     const comparePass = bcrypt.compareSync(password, existingUser.password);
     if (!comparePass) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ error: ERR_INVALID_PASSWORD });
     }
     const accessToken = generateAccessToken(username);
-    return res.status(200).json({ message: "Login successful", accessToken });
+    return res.status(200).json({ message: MSG_SUCCESSFUL_LOGIN, accessToken });
   }
 };
 

@@ -1,5 +1,15 @@
+const {
+  ENUM_CATEGORIES,
+  ERR_SOURCES,
+  ID_PREFERENCES,
+  ERR_REQUIRED_CATEGORIES,
+  ERR_REQUIRED_SOURCES,
+  ERR_CATEGORY_ENUM,
+  ERR_ADDITIONAL_PROPERTIES,
+} = require("../constants/schema.constants");
+
 const preferencesSchema = {
-  $id: "/schemas/preferences",
+  $id: ID_PREFERENCES,
   type: "object",
   properties: {
     categories: {
@@ -7,18 +17,9 @@ const preferencesSchema = {
       minItems: 1,
       items: {
         type: "string",
-        enum: [
-          "business",
-          "entertainment",
-          "general",
-          "health",
-          "science",
-          "sports",
-          "technology",
-        ],
+        enum: ENUM_CATEGORIES,
       },
-      errorMessage:
-        "categories: Allowed categories are 'business' 'entertainment' 'general' 'health' 'science' 'sports' 'technology'.",
+      errorMessage: ERR_CATEGORY_ENUM,
     },
     sources: {
       type: "array",
@@ -26,15 +27,17 @@ const preferencesSchema = {
       items: {
         type: "string",
       },
-      errorMessage: "sources: Must be an array of strings.",
+      errorMessage: ERR_SOURCES,
     },
   },
   required: ["categories", "sources"],
+  additionalProperties: false,
   errorMessage: {
     required: {
-      categories: "The 'categories' field is required.",
-      sources: "The 'sources' field is required.",
+      categories: ERR_REQUIRED_CATEGORIES,
+      sources: ERR_REQUIRED_SOURCES,
     },
+    additionalProperties: ERR_ADDITIONAL_PROPERTIES,
   },
 };
 

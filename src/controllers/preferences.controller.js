@@ -2,6 +2,13 @@ const Ajv = require("ajv").default;
 
 const { readUsers, writeUsers } = require("../utils/usersFile.util");
 const preferencesSchema = require("../schemas/preferences.schema");
+const {
+  ERR_USER_NOT_FOUND,
+  ERR_VALIDATION,
+  ERR_SERVER_ERROR,
+  STATUS_ERROR,
+  MSG_PREFERENCES_UPDATED,
+} = require("../constants/app.constants");
 
 const ajv = new Ajv({ useDefaults: true, allErrors: true });
 require("ajv-errors")(ajv);
@@ -20,11 +27,11 @@ function updatePreferences(req, res) {
       let usersData = JSON.parse(JSON.stringify(readUsers()));
       const userIndex = usersData.findIndex((user) => user.id === id);
       if (userIndex === -1) {
-        return res.status(404).json({ error: "User not found" });
+        return res.status(404).json({ error: ERR_USER_NOT_FOUND });
       }
       usersData[userIndex].preferences = preferences;
       writeUsers(usersData);
-      res.status(200).json({ message: "News preferences updated" });
+      res.status(200).json({ message: MSG_PREFERENCES_UPDATED });
     } else {
       const errors = validatePreferences.errors.map((error) => {
         const { message } = error;
@@ -32,10 +39,10 @@ function updatePreferences(req, res) {
       });
       return res
         .status(400)
-        .json({ status: "error", message: "Validation error", errors });
+        .json({ status: STATUS_ERROR, message: ERR_VALIDATION, errors });
     }
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: ERR_SERVER_ERROR });
   }
 }
 

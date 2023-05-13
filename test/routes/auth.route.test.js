@@ -3,6 +3,13 @@ const chaiHttp = require("chai-http");
 const { expect } = chai;
 
 const app = require("../../src/app");
+const {
+  MSG_SUCCESSFUL_REGISTRATION,
+  ERR_USER_EXISTS,
+  MSG_SUCCESSFUL_LOGIN,
+  ERR_INVALID_PASSWORD,
+  ERR_USER_NOT_FOUND,
+} = require("../../src/constants/app.constants");
 
 chai.use(chaiHttp);
 
@@ -52,7 +59,7 @@ describe("Auth APIs", () => {
           expect(res).to.have.status(201);
           expect(res.body)
             .to.have.property("message")
-            .eql("Registered successfully");
+            .eql(MSG_SUCCESSFUL_REGISTRATION);
           done();
         });
     });
@@ -65,7 +72,7 @@ describe("Auth APIs", () => {
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(400);
-          expect(res.body).to.have.property("error").eql("User already exists");
+          expect(res.body).to.have.property("error").eql(ERR_USER_EXISTS);
           done();
         });
     });
@@ -93,7 +100,9 @@ describe("Auth APIs", () => {
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(200);
-          expect(res.body).to.have.property("message").eql("Login successful");
+          expect(res.body)
+            .to.have.property("message")
+            .eql(MSG_SUCCESSFUL_LOGIN);
           expect(res.body).to.have.property("token");
           loginUserValid.token = res.body.token;
           done();
@@ -108,7 +117,7 @@ describe("Auth APIs", () => {
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(401);
-          expect(res.body).to.have.property("error").eql("Invalid password");
+          expect(res.body).to.have.property("error").eql(ERR_INVALID_PASSWORD);
           done();
         });
     });
@@ -121,7 +130,7 @@ describe("Auth APIs", () => {
         .end((err, res) => {
           expect(err).to.be.null;
           expect(res).to.have.status(404);
-          expect(res.body).to.have.property("error").eql("Username not found");
+          expect(res.body).to.have.property("error").eql(ERR_USER_NOT_FOUND);
           done();
         });
     });
