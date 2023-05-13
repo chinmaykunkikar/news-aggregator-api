@@ -1,32 +1,42 @@
+const {
+  ID_USERS,
+  ERR_USERNAME,
+  ERR_PASSWORD,
+  ERR_PREFERENCES,
+  ERR_REQUIRED_USERNAME,
+  ERR_REQUIRED_PASSWORD,
+  ERR_ADDITIONAL_PROPERTIES,
+  ID_PREFERENCES,
+} = require("../constants/schema.constants");
+
 const usersSchema = {
-  $id: "/schema/users",
+  $id: ID_USERS,
   type: "object",
   properties: {
     username: {
       type: "string",
       minLength: 3,
-      errorMessage: "username: should be a string with minimum 3 characters.",
+      errorMessage: ERR_USERNAME,
     },
     password: {
       type: "string",
       minLength: 3,
-      errorMessage: "password: should be a string with minimum 3 characters.",
+      errorMessage: ERR_PASSWORD,
     },
     preferences: {
-      $ref: "/schemas/preferences",
+      $ref: ID_PREFERENCES,
       default: { categories: [], sources: [] },
-      errorMessage:
-        "The 'preferences' field must be according to the preferences schema.",
+      errorMessage: ERR_PREFERENCES,
     },
   },
   required: ["username", "password"],
   additionalProperties: false,
   errorMessage: {
     required: {
-      username: "The 'username' field is required.",
-      password: "The 'password' field is required.",
+      username: ERR_REQUIRED_USERNAME,
+      password: ERR_REQUIRED_PASSWORD,
     },
-    additionalProperties: "The input should not have additional properties.",
+    additionalProperties: ERR_ADDITIONAL_PROPERTIES,
   },
 };
 

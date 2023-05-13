@@ -1,6 +1,11 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const app = require("../../src/app");
+const {
+  MSG_PREFERENCES_UPDATED,
+  ERR_VALIDATION,
+  ERR_MISSING_AUTH_HEADER,
+} = require("../../src/constants/app.constants");
 
 const { expect } = chai;
 
@@ -14,7 +19,7 @@ describe("Preferences APIs", () => {
       .send({ username: "foo", password: "bar" })
       .end((err, res) => {
         expect(err).to.be.null;
-        token = res.body.token;
+        accessToken = res.body.accessToken;
         done();
       });
   });
@@ -23,7 +28,7 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .get("/preferences")
-      .set("Authorization", `JWT ${token}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
@@ -38,14 +43,14 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .put("/preferences")
-      .set("Authorization", `JWT ${token}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .send({ categories: ["business"], sources: ["business-insider"] })
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
         expect(res.body)
           .to.have.property("message")
-          .eql("News preferences updated");
+          .eql(MSG_PREFERENCES_UPDATED);
         done();
       });
   });
@@ -54,12 +59,12 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .put("/preferences")
-      .set("Authorization", `JWT ${token}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .send({ categories: ["music"], sources: ["bbc-news"] })
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(400);
-        expect(res.body).to.have.property("error").eql("Invalid data");
+        expect(res.body).to.have.property("message").eql(ERR_VALIDATION);
         done();
       });
   });
@@ -68,12 +73,12 @@ describe("Preferences APIs", () => {
     chai
       .request(app)
       .put("/preferences")
-      .set("Authorization", `JWT ${token}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .send({ categories: ["technology"] })
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(400);
-        expect(res.body).to.have.property("error").eql("Invalid data");
+        expect(res.body).to.have.property("message").eql(ERR_VALIDATION);
         done();
       });
   });
@@ -85,7 +90,7 @@ describe("Preferences APIs", () => {
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(401);
-        expect(res.body).to.have.property("error").eql("Auth header not found");
+        expect(res.body).to.have.property("error").eql(ERR_MISSING_AUTH_HEADER);
         done();
       });
   });
@@ -98,7 +103,7 @@ describe("Preferences APIs", () => {
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(401);
-        expect(res.body).to.have.property("error").eql("Auth header not found");
+        expect(res.body).to.have.property("error").eql(ERR_MISSING_AUTH_HEADER);
         done();
       });
   });

@@ -5,6 +5,12 @@ const routes = express.Router();
 const auth = require("./routes/auth.route");
 const news = require("./routes/news.route");
 const preferences = require("./routes/preferences.route");
+const { PORT: ENV_PORT } = require("./configs/env.config");
+const {
+  STATUS_ERROR,
+  ERR_SERVER_START,
+  MSG_SERVER_RUNNING,
+} = require("./constants/app.constants");
 
 let PORT;
 const app = express();
@@ -22,16 +28,12 @@ routes.use("/", auth);
 routes.use("/news", news);
 routes.use("/preferences", preferences);
 
-if (process.env.PORT !== "") {
-  PORT = process.env.PORT;
-} else {
-  PORT = 3000;
-}
+ENV_PORT !== "" ? (PORT = ENV_PORT) : (PORT = 3000);
 
 app
   .listen(PORT, (error) => {
-    if (!error) console.log("Server is running on port " + PORT);
+    if (!error) console.log(MSG_SERVER_RUNNING + PORT);
   })
-  .on("error", (error) => console.error("Cannot start the server.\n", error));
+  .on(STATUS_ERROR, (error) => console.error(ERR_SERVER_START, error));
 
 module.exports = app;
