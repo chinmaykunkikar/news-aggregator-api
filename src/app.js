@@ -11,6 +11,10 @@ const {
   ERR_SERVER_START,
   MSG_SERVER_RUNNING,
 } = require("./constants/app.constants");
+const {
+  incomingLogs,
+  outgoingLogs,
+} = require("./middlewares/logger.middleware");
 
 let PORT;
 const app = express();
@@ -23,6 +27,9 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", (_, res) => {
   res.status(200).send("<h2>Welcome to the News Aggregator API</h2>");
 });
+
+routes.use(incomingLogs);
+routes.use(outgoingLogs);
 
 routes.use("/", auth);
 routes.use("/news", news);
