@@ -1,9 +1,8 @@
-const redis = require("redis");
+const Redis = require("ioredis");
 
-const redisClient = redis.createClient();
+const redisClient = new Redis();
 
 (async () => {
-  await redisClient.connect();
   redisClient.on("error", (err) => {
     console.error("Failed to connect to Redis:", err);
     console.error("Please make sure Redis is running and try again.");
