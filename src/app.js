@@ -15,6 +15,7 @@ const {
   incomingLogs,
   outgoingLogs,
 } = require("./middlewares/logger.middleware");
+const rateLimiter = require("./middlewares/rateLimiter.middleware");
 
 let PORT;
 const app = express();
@@ -30,6 +31,7 @@ app.get("/", (_, res) => {
 
 routes.use(incomingLogs);
 routes.use(outgoingLogs);
+routes.use(rateLimiter);
 
 routes.use("/", auth);
 routes.use("/news", news);

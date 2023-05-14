@@ -11,7 +11,7 @@ module.exports = async function getOrSetCache(key, callback, ...callbackArgs) {
       return JSON.parse(data);
     }
     const dataToCache = await callback(...callbackArgs);
-    await redisClient.setEx(key, ttl, JSON.stringify(dataToCache));
+    await redisClient.setex(key, ttl, JSON.stringify(dataToCache));
     return dataToCache;
   } catch (error) {
     throw error;
